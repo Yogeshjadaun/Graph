@@ -1,0 +1,54 @@
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+
+    public static void totalShapesUtil(int a[][],int i,int j){
+        if(i>=0 && i<a.length && j>=0 && j<a[0].length)
+        if(a[i][j]==1)
+         {
+             a[i][j]=0;
+             totalShapesUtil(a,i,j+1);
+             totalShapesUtil(a,i+1,j);
+             totalShapesUtil(a,i,j-1);
+             totalShapesUtil(a,i-1,j);
+         }
+    }
+    public static int totalShapes(int a[][]){
+        int cnt=0;
+        for(int i=0;i<a.length;i++){
+            for(int j=0;j<a[0].length;j++){
+                if(a[i][j]==1){
+                    //System.out.println(i+" "+j);
+                  totalShapesUtil(a,i,j);
+                  cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+        //int V = 5;
+        Scanner sc=new Scanner(System.in);
+        int t=sc.nextInt();
+        for(int tt=0;tt<t;tt++){
+            int n=sc.nextInt();
+            int m=sc.nextInt();
+            int a[][]=new int[n][m];
+            for(int qq=0;qq<n;qq++){
+                String s=sc.next();
+                for(int j=0;j<m;j++){
+                    if(s.charAt(j)=='x' || s.charAt(j)=='X')
+                      a[qq][j]=1;
+                    else
+                      a[qq][j]=0;
+                } 
+            }
+        System.out.println(totalShapes(a));
+        }
+    }
+}
