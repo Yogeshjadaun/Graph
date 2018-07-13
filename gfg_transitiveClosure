@@ -1,0 +1,61 @@
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+		static public class Graph{
+			int vertex;
+			int tc[][];
+			LinkedList<Integer> adjList[];
+			Graph(int vertex){
+				this.vertex=vertex;
+				tc=new int[vertex][vertex];
+				adjList=new LinkedList[vertex];
+				for(int i=0;i<vertex;i++){
+					adjList[i]=new LinkedList<>();
+				}
+			}
+		}
+		public static void addEdge(Graph graph,int src,int dest){
+			graph.adjList[src].addFirst(dest);
+		}
+		public static void displayGraph(Graph g){
+			for(int i=0;i<g.vertex;i++){
+				System.out.println();
+				System.out.print(i+"    ");
+				for(int l:g.adjList[i]){
+				   System.out.print(l+" ");
+				}
+			}
+		}
+	public static void tcUtil(Graph g,int s,int v){
+	    g.tc[s][v]=1;
+	    for(int k:g.adjList[v]){
+	        if(g.tc[s][k]==0)
+	           tcUtil(g,s,k);
+	    }
+	}
+    public static void transitiveClosure(Graph g){
+       for(int i=0;i<g.vertex;i++){
+           tcUtil(g,i,i);
+       }
+       for(int i=0;i<g.vertex;i++){
+           System.out.println(Arrays.toString(g.tc[i]));
+       }
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+        int V = 4;
+
+            Graph g = new Graph(V);
+            addEdge(g,0, 1);
+            addEdge(g,0, 2);
+            addEdge(g,1, 2);
+            addEdge(g,2, 0);
+            addEdge(g,2, 3);
+            addEdge(g,3, 3);
+            transitiveClosure(g);
+    }
+}
