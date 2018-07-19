@@ -1,0 +1,76 @@
+/* package whatever; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class Ideone
+{
+	public static class Vertex{
+		List<Edge> neighbours;
+		public Vertex(){
+			neighbours=new ArrayList<>();
+		}
+		
+	}
+	public static class Edge  implements Comparable<Edge>{
+		int cost;
+		int end;
+		public Edge(int end,int cost){
+			this.end=end;
+			this.cost=cost;
+		}
+		public int compareTo(Edge e) {
+			return this.cost - e.cost;
+		}
+	}
+	public static int primsMst(Vertex[] graph,int source){
+		int cost=0;
+		boolean visited[]=new boolean[graph.length];
+		PriorityQueue<Edge> pq=new PriorityQueue<Edge>();
+		visited[source]=true;
+		for(Edge edge:graph[source].neighbours){
+			pq.add(edge);
+		}
+		while(!pq.isEmpty()){
+			Edge u=pq.remove();
+			if(visited[u.end]){
+				continue;
+			}
+			cost+=u.cost;
+			visited[u.end]=true;
+			for(Edge ee:graph[u.end].neighbours){
+				pq.add(ee);
+			}
+		}
+		for(int k=1;k<graph.length;k++){
+			if(!visited[k]){
+				return -1;
+			}
+		}
+		return cost;
+	}
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		int t=sc.nextInt();
+		for(int tt=0;tt<t;tt++){
+			int n=sc.nextInt();
+			int e=sc.nextInt();
+			Vertex graph[]=new Vertex[n+1];
+			for(int i=0;i<=n;i++){
+				graph[i]=new Vertex();
+			}
+			for(int i=0;i<e;i++){
+				int start=sc.nextInt();
+				int end=sc.nextInt();
+				int cost=sc.nextInt();
+				graph[start].neighbours.add(new Edge(end,cost));
+				graph[end].neighbours.add(new Edge(start,cost));
+			}
+			System.out.println(primsMst(graph,1));
+		}
+		
+	}
+}
