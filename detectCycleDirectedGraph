@@ -1,0 +1,70 @@
+/* package whatever; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class Ideone
+{
+	public static class Graph{
+		int v;
+		LinkedList<Integer> adjList[];
+		public Graph(int v){
+			this.v=v;
+			adjList=new LinkedList[v];
+			for(int i=0;i<v;i++){
+				adjList[i]=new LinkedList<>();
+			}
+		}
+	}
+	public static void addEdge(Graph g,int s,int d){
+	   g.adjList[s].addFirst(d);
+	}
+	public static boolean detectCycleUtil(Graph g,int s,boolean visited[],boolean recstack[]){
+		if(recstack[s])
+		  return true;
+	    if(visited[s])
+	       return false;
+	    visited[s]=true;
+	    recstack[s]=true;   
+	    for(int k:g.adjList[s]){
+	    	if(detectCycleUtil(g,k,visited,recstack))
+	    	  return true;
+	    }
+	    recstack[s]=false;
+	    return false;
+	}
+	public static boolean detectCycle(Graph g){
+		boolean visited[]=new boolean[g.v];
+		boolean recstack[]=new boolean[g.v];
+		for(int i=0;i<g.v;i++){
+			if(detectCycleUtil(g,i,visited,recstack)){
+				return true;
+			}
+		}
+		return false;
+	}
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc=new Scanner(System.in);
+		int t=sc.nextInt();
+		for(int tt=0;tt<t;tt++){
+			int v=sc.nextInt();
+			Graph g=new Graph(v);
+			int e=sc.nextInt();
+			for(int i=0;i<e;i++){
+				int s=sc.nextInt();
+				int d=sc.nextInt();
+				addEdge(g,s,d);
+				
+			}
+			if(detectCycle(g)){
+				System.out.println("1");
+			}
+			else{
+				System.out.println("0");
+			}
+		}
+	}
+}
